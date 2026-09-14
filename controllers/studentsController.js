@@ -1,11 +1,11 @@
 const studentsServices = require ("../services/studentsService");
+const validateStudents = require ("../validators/studentsValidator")
 
 
 const getStudents = (req, res) =>{
 
 
     studentsServices.getStudents((err,result) =>{
-
         if (err) {
             console.error (err);
             return res.status(500).json({
@@ -18,67 +18,93 @@ const getStudents = (req, res) =>{
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//POST
 const postStudents = (req, res) => {
     const student = req.body;
 
-        studentsServices.postStudents(student, (err, result) => {
-            if(err) {
-                console.error (err);
-                return res.status(500).json({
-                    message: "Failed to register"
-                });
-            }
 
-            res.json({
-                message: "Successfully registered",
-                id: result.insertId
+        if(!validateStudents(student)) {
+            return res.status(400).json({
+                message: "Invalid student data"
             })
         }
-    )
-}
+    
+
+        studentsServices.postStudents(student, (err, result) => {
+            if(err){
+                console.error(err);
+                return res.status(500).json({
+                    message: "Failed to register"
+                })
+            }
+                res.json ({
+                    message: "Successfully registered",
+                    id: result.insertId
+                })
+            })
+       }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const updateStudents = (req, res) => {
+
     const id = req.params.id;
     const student = req.body;
 
-       studentsServices.updateStudents(id, student, (err, result) => {
+            
+        if(!validateStudents(student)) {
+            return res.status(400).json({
+                message: "Invalid to update student"
+            })
+        }
+    
+
+        studentsServices.updateStudents(id, student, (err, result) =>{
+
             if (err) {
                 console.error(err);
                 return res.status(500).json({
-                    message: "Failed to update student"
-                });
-            }
+                    message: "Failed to update"
+                })
+            }      
+
 
             res.json({
                 message: "Successfully updated",
                 id: id
             })
+             })
         }
-    )
-}
+    
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const deleteStudents = (req, res) => {
     const id = req.params.id;
 
-        studentsServices.deleteStudents(id, (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({
-                    message: "Failed to delete"
-                })
-            }
+    if (!id || isNaN(id)) {
+        return res.status(400).json ({
+            message: "Invalid student ID"
+        })
+    }
 
-            res.json({
-                message: "Successfully deleted",
-                id: id
+
+    studentsServices.deleteStudents(id, (err, result) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).json({
+                message: "Failed to delete"
             })
-     }
-    );
-}
+        }
 
+        res.json({
+            message: "Successfully deleted",
+            id: id
+        })
+    })
+
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
