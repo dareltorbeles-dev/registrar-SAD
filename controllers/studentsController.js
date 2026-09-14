@@ -3,7 +3,6 @@ const studentsServices = require ("../services/studentsService");
 
 const getStudents = (req, res) =>{
 
-    const sql = `SELECT * FROM students`;
 
     studentsServices.getStudents((err,result) =>{
 
@@ -22,9 +21,6 @@ const getStudents = (req, res) =>{
 const postStudents = (req, res) => {
     const student = req.body;
 
-    const sql = `INSERT INTO students (student_number, first_name, last_name, course, year_level)
-    VALUES (?, ?, ?, ?, ?)
-    `;
         studentsServices.postStudents(student, (err, result) => {
             if(err) {
                 console.error (err);
@@ -66,8 +62,6 @@ const updateStudents = (req, res) => {
 
 const deleteStudents = (req, res) => {
     const id = req.params.id;
-
-    const sql = `DELETE FROM students WHERE id = ?`;
 
         studentsServices.deleteStudents(id, (err, result) => {
             if (err) {
