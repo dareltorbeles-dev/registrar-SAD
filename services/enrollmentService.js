@@ -10,6 +10,7 @@ const getEnrollments = (callback) => {
     db.query(sql, callback);
 
 };
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const postEnrollments = (student, callback) =>{
     const sql = `INSERT INTO enrollment (student_id, semester_id)
@@ -26,7 +27,6 @@ const postEnrollments = (student, callback) =>{
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 const updateEnrollments = (id, enrollment, callback) => {
 
@@ -51,11 +51,23 @@ const updateEnrollments = (id, enrollment, callback) => {
     )
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const deleteEnrollments = (id, callback) => {
+
+    const sql = `DELETE FROM enrollment WHERE id = ?`;
+
+    db.query(
+        sql,
+        [id],
+        callback
+    )
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module.exports = {
     getEnrollments,
     postEnrollments,
-    updateEnrollments
+    updateEnrollments,
+    deleteEnrollments
 }

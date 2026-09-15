@@ -1,10 +1,10 @@
-const e = require("express");
+
 const enrollmentServices = require ("../services/enrollmentService");
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const getEnrollments = (req, res) => {
     enrollmentServices.getEnrollments((err, result) =>{
-    })
 
 
     if (err) {
@@ -14,10 +14,11 @@ const getEnrollments = (req, res) => {
         })
     }
 
-    res.json ({
-        message: "Successfully to get enrollment"     
-    })
+    res.json (result)
+ })
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const postEnrollments = (req, res) => {
 
@@ -61,12 +62,35 @@ const updateEnrollments = (req, res) => {
             id: id
         })
     })
+}
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteEnrollments = (req, res) => {
+
+    const id = req.params.id;
+
+
+    enrollmentServices.deleteEnrollments(id, (err, result) =>{
+
+        if (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: "Failed to delete"
+            })
+        }
+
+        res.json({
+            message: "Successfully deleted",
+            id: id
+        })
+    })
 }
 
 
 module.exports = {
     getEnrollments,
     postEnrollments,
-    updateEnrollments
+    updateEnrollments,
+    deleteEnrollments
 }
