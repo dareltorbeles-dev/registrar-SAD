@@ -1,0 +1,31 @@
+const db = require ("../db");
+const { post } = require("../routes/students");
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const getProgram = (callback) => {
+    const sql = `SELECT * FROM program`;
+
+    db.query(sql, callback);
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const postProgram = (program, callback) => {
+    const sql = `INSERT INTO program (program_name, department_id)
+    VALUES (?, ?)
+    `;
+
+    db.query (
+        sql, [
+            program.program_name,
+            program.department_id
+        ],
+        callback
+    )
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports = {
+    getProgram,
+    postProgram
+}
